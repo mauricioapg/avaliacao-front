@@ -12,16 +12,31 @@
 ## Intruções para executar o build
 
 ### MacOS
-- Se ainda não tiver o Maven instalado, instale-o usando Homebrew:
-  - brew install maven
+- Se ainda não tiver o Node instalado, instale-o usando Homebrew:
+  - brew install node
     <br>
     <br>
-- Abra o diretório do projeto onde o arquivo pom.xml está localizado e execute:
-  - mvn clean install
+- Verifique se tudo foi instalado com o seguinte comando:
+  - node -v
+    <br>
+  - npm -v
     <br>
     <br>
-- Execute o seguinte comando para rodar o projeto e mantê-lo em segundo plano:
-  - nohup java -jar target/demo-0.0.1-SNAPSHOT.jar &
+- Para rodar o projeto em modo desenvolvimento:
+  - npm run serve
+    <br>
+    Acesse a aplicação em http://localhost:3000
+    <br>
+    <br>
+- Para buildar o projeto para produção:
+  - npm run build
+    <br>
+    <br>
+- Após isso execute os comandos:
+  - npm install -g serve
+  - serve -s dist
+    <br>
+    Acesse a aplicação em http://localhost:3000
 
 ### Windows
 - Se ainda não tiver o Maven instalado, faça o download  em: https://maven.apache.org/download.cgi e siga as instruções de instalação.
