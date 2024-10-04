@@ -1,5 +1,5 @@
 # Projeto Avaliação
-- Este projeto consome a API que permite o agendamento de transferências financeiras.
+- Este projeto Vue.js consome a API que permite o agendamento de transferências financeiras.
 
 ## Tecnologias e ferramentas utilizadas
 
