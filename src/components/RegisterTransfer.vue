@@ -10,15 +10,25 @@
             <label class="labelField" for="destinyAccount">Conta destino</label>
             <input type="text" v-model="destinyAccount" class="form-control" id="destinyAccount" required />
             <label class="labelField" for="transferValue">Valor</label>
-            <input type="text" v-model="transferValue" class="form-control" id="transferValue" required />
+            <input 
+              type="text" 
+              v-model="transferValue" 
+              @input="formatTransferValue" 
+              class="form-control" 
+              id="transferValue" 
+              required 
+            />
             <label class="labelField" for="transferDate">Data da transferência</label>
-            <input type="text" v-model="transferDate" class="form-control" id="transferDate" required />
+            <input type="date" v-model="transferDate" class="form-control" id="transferDate" required />
           </div>
           <div class="button-group">
             <button id="submitBtn" type="submit" class="btn btn-primary">Agendar</button>
             <button id="backBtn" type="button" class="btn btn-secondary" @click="goToList()">Voltar</button>
           </div>
         </form>
+        <div v-if="message" class="mt-3">
+          <div :class="['alert', messageType]">{{ message }}</div>
+        </div>
       </div>
     </div>
   </div>
@@ -32,6 +42,8 @@ export default {
       destinyAccount: '',
       transferValue: '',
       transferDate: '',
+      message: '',
+      messageType: ''
     };
   },
   methods: {
@@ -39,8 +51,8 @@ export default {
       const transferData = {
         originAccount: this.originAccount,
         destinyAccount: this.destinyAccount,
-        transferValue: this.transferValue,
-        transferDate: this.transferDate,
+        transferValue: parseFloat(this.transferValue.replace(',', '.')),
+        transferDate: this.formatDate(this.transferDate),
       };
 
       try {
@@ -50,9 +62,24 @@ export default {
         this.destinyAccount = '';
         this.transferValue = '';
         this.transferDate = '';
+        this.message = "Transferência agendada com sucesso!";
+        this.messageType = 'alert alert-success';
       } catch (error) {
-        console.error('Erro ao agendar transferência:', error);
+        this.message = 'Erro ao agendar transferência: ' + error.message;
+        this.messageType = 'alert alert-danger';
       }
+      setTimeout(() => {
+        this.message = '';
+      }, 4000);
+    },
+    formatTransferValue(event) {
+      const value = event.target.value.replace(/[^0-9.,]/g, '');
+      this.transferValue = value.replace(',', '.');
+    },
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      const formattedDate = date.toISOString();
+      return formattedDate.substring(0, 19);
     },
     goToList() {
       this.$router.push('/transfer');
@@ -89,9 +116,14 @@ form {
   justify-content: center;
 }
 
-#submitBtn, #backBtn {
+#submitBtn,
+#backBtn {
   width: 120px;
   height: 40px;
   margin: 5px;
+}
+
+#transferDate {
+  height: 42px;
 }
 </style>
